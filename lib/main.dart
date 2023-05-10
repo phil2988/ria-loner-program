@@ -41,7 +41,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future loadJsonString() async {
-    final file = File("lib/data.json");
+    File file;
+    try {
+      file = File("data.json");
+      return await file.readAsString();
+    } catch (e) {
+      file = await File("data.json").create();
+    }
     return await file.readAsString();
   }
 
@@ -125,7 +131,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  final dataFile = File("lib/data.json");
+                  final dataFile = File("data.json");
                   final data = dataFile.readAsStringSync();
                   List<Loan> loans = jsonDecode(data)
                       .map<Loan>((e) => Loan.fromJson(e))
@@ -208,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 width: constraints.maxWidth * 0.1,
                                 child: Text(e.loaner))),
                             DataCell(SizedBox(
-                                width: constraints.maxWidth * 0.05,
+                                width: constraints.maxWidth * 0.08,
                                 child: Text(e.studyNumber))),
                             DataCell(SizedBox(
                                 width: constraints.maxWidth * 0.1,

@@ -51,14 +51,14 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
           }
           if (_formKey.currentState!.validate()) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Saving loan...')),
+              const SnackBar(content: Text('Loan added!')),
             );
             saveToJson();
             Navigator.pop(context);
             return;
           }
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('An unexpected error occured...')),
+            const SnackBar(content: Text('Error...')),
           );
         },
         child: const Icon(Icons.check),
@@ -237,8 +237,7 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
   }
 
   saveToJson() {
-    var file = File('lib/data.json');
-
+    File file = File('data.json');
     var existingData = file.readAsStringSync();
 
     var existingDataDecoded =
