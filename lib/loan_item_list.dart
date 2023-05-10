@@ -13,10 +13,7 @@ class LoanItemList extends StatefulWidget {
 }
 
 class _LoanItemListState extends State<LoanItemList> {
-  final items = <LoanItem>[
-    LoanItem(category: LoanCategory.boardGames, name: "Test"),
-    LoanItem(category: LoanCategory.other, name: "Test2"),
-  ];
+  final items = <LoanItem>[];
 
   updateItems() {
     widget.setLoanItems(items);
@@ -135,7 +132,7 @@ class _LoanItemDisplayState extends State<LoanItemDisplay> {
                       value: value,
                       child: Padding(
                         padding: const EdgeInsets.only(left: 10),
-                        child: Text(value.toString().split(".")[1]),
+                        child: Text(value.toString()),
                       ),
                     );
                   },

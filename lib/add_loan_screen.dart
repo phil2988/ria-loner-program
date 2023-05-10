@@ -6,6 +6,8 @@ import 'package:ria_udlaans_program/loan_item.dart';
 import 'package:ria_udlaans_program/loan_item_list.dart';
 import 'package:ria_udlaans_program/select_date_widget.dart';
 
+import 'loan.dart';
+
 class AddLoanScreen extends StatefulWidget {
   const AddLoanScreen({super.key});
 
@@ -242,21 +244,16 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
     var existingDataDecoded =
         existingData.isNotEmpty ? jsonDecode(existingData) : [];
 
-    var loan = {
-      "loaner": loanerController.text,
-      "employee": employeeController.text,
-      "studyNumber": studyNumberController.text,
-      "comments": commentsController.text,
-      "loanDate": loanDate?.toIso8601String() ?? "",
-      "returnDate": returnDate?.toIso8601String() ?? "",
-      "items": items
-          .map((e) => {
-                "name": e.name,
-                "category": e.category.toString().split('.').last,
-              })
-          .toList(),
-    };
-    existingDataDecoded.add(loan);
+    existingDataDecoded.add(Loan(
+      loaner: loanerController.text,
+      employee: employeeController.text,
+      studyNumber: studyNumberController.text,
+      comments: commentsController.text,
+      loanDate: loanDate ?? DateTime.now(),
+      returnDate: returnDate ?? DateTime.now(),
+      items: items,
+      delivered: false,
+    ).toJson());
 
     file.writeAsStringSync(jsonEncode(existingDataDecoded));
   }
