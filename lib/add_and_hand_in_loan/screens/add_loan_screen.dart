@@ -2,11 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:ria_udlaans_program/loan_item.dart';
-import 'package:ria_udlaans_program/loan_item_list.dart';
-import 'package:ria_udlaans_program/select_date_widget.dart';
 
-import 'loan.dart';
+import '../models/loan.dart';
 
 class AddLoanScreen extends StatefulWidget {
   const AddLoanScreen({super.key});
