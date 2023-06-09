@@ -4,6 +4,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 import '../models/loan.dart';
+import '../models/loan_item.dart';
+import '../widgets/loan_item_list_widget.dart';
+import '../widgets/select_date_widget.dart';
 
 class AddLoanScreen extends StatefulWidget {
   const AddLoanScreen({super.key});

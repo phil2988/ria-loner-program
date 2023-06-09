@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'loan_category.dart';
-import 'loan_item.dart';
+import '../loan_category.dart';
+import '../models/loan_item.dart';
 
 class LoanItemList extends StatefulWidget {
   const LoanItemList({super.key, required this.setLoanItems});

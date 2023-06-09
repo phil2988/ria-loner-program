@@ -1,4 +1,4 @@
-import 'package:ria_udlaans_program/loan_category.dart';
+import '../loan_category.dart';
 
 class LoanItem {
   LoanCategory? category;
