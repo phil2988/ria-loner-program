@@ -9,7 +9,7 @@ import '../widgets/loan_item_list_widget.dart';
 import '../widgets/select_date_widget.dart';
 
 class AddLoanScreen extends StatefulWidget {
-  const AddLoanScreen({super.key});
+  const AddLoanScreen({Key? key}) : super(key: key);
 
   @override
   State<AddLoanScreen> createState() => _AddLoanScreenState();
@@ -80,92 +80,7 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
                     width: pageConstraints.maxWidth * 0.6,
                     child: Column(
                       children: [
-                        LayoutBuilder(builder: (context, leftConstraints) {
-                          return Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width: leftConstraints.maxWidth * 0.45,
-                                    child: TextFormField(
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter a loaner';
-                                        }
-                                        return null;
-                                      },
-                                      controller: loanerController,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Loaner',
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: leftConstraints.maxWidth * 0.45,
-                                    child: TextFormField(
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter a value';
-                                        }
-
-                                        final numericRegex = RegExp(r'^\d+$');
-                                        if (!numericRegex.hasMatch(value)) {
-                                          return 'Input must contain only numbers';
-                                        }
-
-                                        if (value.length != 9) {
-                                          return 'Input must have a length of exactly 9';
-                                        }
-
-                                        return null;
-                                      },
-                                      controller: studyNumberController,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Study number',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(
-                                    width: leftConstraints.maxWidth * 0.45,
-                                    child: TextFormField(
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'Please enter an employee';
-                                        }
-                                        return null;
-                                      },
-                                      controller: employeeController,
-                                      decoration: const InputDecoration(
-                                        border: OutlineInputBorder(),
-                                        hintText: 'Employee',
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 20),
-                              TextFormField(
-                                maxLines: 5,
-                                controller: commentsController,
-                                decoration: const InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  hintText: 'Comments',
-                                ),
-                              ),
-                            ],
-                          );
-                        }),
+                        buildFormFields(pageConstraints),
                       ],
                     ),
                   ),
@@ -176,54 +91,10 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
                       mainAxisSize: MainAxisSize.max,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        LayoutBuilder(
-                          builder: (context, rightConstraints) {
-                            return SizedBox(
-                              width: rightConstraints.maxWidth,
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          const Text("Loan date:   "),
-                                          SelectDateWidget(
-                                              initialDate: DateTime.now(),
-                                              lastDate: DateTime.now(),
-                                              label: "Loan date",
-                                              onDateSelected: (date) =>
-                                                  setState(() {
-                                                    loanDate = date;
-                                                  })),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          const Text("Return date:   "),
-                                          SelectDateWidget(
-                                              lastDate: DateTime.now()
-                                                  .add(const Duration(days: 3)),
-                                              label: "Return date",
-                                              onDateSelected: (date) =>
-                                                  setState(() {
-                                                    returnDate = date;
-                                                  })),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(height: 20),
-                                  const SizedBox(height: 10),
-                                  LoanItemList(setLoanItems: (items) {
-                                    this.items = items;
-                                  }),
-                                ],
-                              ),
-                            );
-                          },
-                        ),
+                        buildDateSelection(pageConstraints),
+                        const SizedBox(height: 20),
+                        const SizedBox(height: 10),
+                        LoanItemList(setLoanItems: setItems),
                       ],
                     ),
                   ),
@@ -236,23 +107,152 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
     );
   }
 
-  saveToJson() {
-    File file = File('data.json');
-    var existingData = file.readAsStringSync();
+  Column buildFormFields(BoxConstraints constraints) {
+    return Column(
+      children: [
+        buildFormField(
+          constraints: constraints,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a loaner';
+            }
+            return null;
+          },
+          controller: loanerController,
+          hintText: 'Loaner',
+        ),
+        const SizedBox(height: 20),
+        buildFormField(
+          constraints: constraints,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter a value';
+            }
 
-    var existingDataDecoded =
+            final numericRegex = RegExp(r'^\d+$');
+            if (!numericRegex.hasMatch(value)) {
+              return 'Input must contain only numbers';
+            }
+
+            if (value.length != 9) {
+              return 'Input must have a length of exactly 9';
+            }
+
+            return null;
+          },
+          controller: studyNumberController,
+          hintText: 'Study number',
+        ),
+        const SizedBox(height: 20),
+        buildFormField(
+          constraints: constraints,
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter an employee';
+            }
+            return null;
+          },
+          controller: employeeController,
+          hintText: 'Employee',
+        ),
+        const SizedBox(height: 20),
+        TextFormField(
+          maxLines: 5,
+          controller: commentsController,
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Comments',
+          ),
+        ),
+      ],
+    );
+  }
+
+  TextFormField buildFormField({
+    required BoxConstraints constraints,
+    required String? Function(String?) validator,
+    required TextEditingController controller,
+    required String hintText,
+  }) {
+    return TextFormField(
+      validator: validator,
+      controller: controller,
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        hintText: hintText,
+      ),
+    );
+  }
+
+  Column buildDateSelection(BoxConstraints constraints) {
+    return Column(
+      children: [
+        buildDateRow(
+          constraints: constraints,
+          labelText: 'Loan date:   ',
+          label: 'Loan date',
+          onDateSelected: (date) => setState(() {
+            loanDate = date;
+          }),
+        ),
+        buildDateRow(
+          constraints: constraints,
+          labelText: 'Return date:   ',
+          label: 'Return date',
+          onDateSelected: (date) => setState(() {
+            returnDate = date;
+          }),
+        ),
+      ],
+    );
+  }
+
+  Row buildDateRow({
+    required BoxConstraints constraints,
+    required String labelText,
+    required String label,
+    required void Function(DateTime?) onDateSelected,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Row(
+          children: [
+            Text(labelText),
+            SelectDateWidget(
+              initialDate: DateTime.now(),
+              lastDate: DateTime.now(),
+              label: label,
+              onDateSelected: onDateSelected,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  void setItems(List<LoanItem> items) {
+    this.items = items;
+  }
+
+  void saveToJson() {
+    final file = File('data.json');
+    final existingData = file.readAsStringSync();
+    final existingDataDecoded =
         existingData.isNotEmpty ? jsonDecode(existingData) : [];
 
-    existingDataDecoded.add(Loan(
-      loaner: loanerController.text,
-      employee: employeeController.text,
-      studyNumber: studyNumberController.text,
-      comments: commentsController.text,
-      loanDate: loanDate ?? DateTime.now(),
-      returnDate: returnDate ?? DateTime.now(),
-      items: items,
-      delivered: false,
-    ).toJson());
+    existingDataDecoded.add(
+      Loan(
+        loaner: loanerController.text,
+        employee: employeeController.text,
+        studyNumber: studyNumberController.text,
+        comments: commentsController.text,
+        loanDate: loanDate ?? DateTime.now(),
+        returnDate: returnDate ?? DateTime.now(),
+        items: items,
+        delivered: false,
+      ).toJson(),
+    );
 
     file.writeAsStringSync(jsonEncode(existingDataDecoded));
   }
