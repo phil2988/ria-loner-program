@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "197737305377",
+    "project_id": "ria-aarhus-udlaans-program",
+    "storage_bucket": "ria-aarhus-udlaans-program.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:197737305377:android:d369a2da74cf538b335a60",
+        "android_client_info": {
+          "package_name": "com.example.ria_udlaans_program"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "197737305377-9ie205glcp715tk5popu3ia08bb209ju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLgukRgoSvCd_mBRqQdqdVjEHCz5nNdrY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "197737305377-9ie205glcp715tk5popu3ia08bb209ju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

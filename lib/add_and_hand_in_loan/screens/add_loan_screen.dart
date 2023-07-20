@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:ria_udlaans_program/add_and_hand_in_loan/loan_repository.dart';
 
 import '../models/loan.dart';
 import '../models/loan_item.dart';
@@ -241,19 +242,30 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
     final existingDataDecoded =
         existingData.isNotEmpty ? jsonDecode(existingData) : [];
 
-    existingDataDecoded.add(
-      Loan(
-        loaner: loanerController.text,
-        employee: employeeController.text,
-        studyNumber: studyNumberController.text,
-        comments: commentsController.text,
-        loanDate: loanDate ?? DateTime.now(),
-        returnDate: returnDate ?? DateTime.now(),
-        items: items,
-        delivered: false,
-      ).toJson(),
-    );
+    // existingDataDecoded.add(
+    //   Loan(
+    //     loaner: loanerController.text,
+    //     employee: employeeController.text,
+    //     studyNumber: studyNumberController.text,
+    //     comments: commentsController.text,
+    //     loanDate: loanDate ?? DateTime.now(),
+    //     returnDate: returnDate ?? DateTime.now(),
+    //     items: items,
+    //     delivered: false,
+    //   ).toJson(),
+    // );
 
-    file.writeAsStringSync(jsonEncode(existingDataDecoded));
+    // file.writeAsStringSync(jsonEncode(existingDataDecoded));
+
+    LoanRepository().addLoan(Loan(
+      loaner: loanerController.text,
+      employee: employeeController.text,
+      studyNumber: studyNumberController.text,
+      comments: commentsController.text,
+      loanDate: loanDate ?? DateTime.now(),
+      returnDate: returnDate ?? DateTime.now(),
+      items: items,
+      delivered: false,
+    ));
   }
 }

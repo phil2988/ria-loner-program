@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>197737305377-bvju2j882vvfh4kt39ahcd6dnhp6jepa.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.197737305377-bvju2j882vvfh4kt39ahcd6dnhp6jepa</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDWXd4rQcBBNx1YOtXQ9Y5ESTaNymPfwcc</string>
+	<key>GCM_SENDER_ID</key>
+	<string>197737305377</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.riaUdlaansProgram</string>
+	<key>PROJECT_ID</key>
+	<string>ria-aarhus-udlaans-program</string>
+	<key>STORAGE_BUCKET</key>
+	<string>ria-aarhus-udlaans-program.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:197737305377:ios:fbb64f6f5b964832335a60</string>
+</dict>
+</plist>
