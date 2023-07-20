@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:ria_udlaans_program/add_and_hand_in_loan/loan_repository.dart';
 
@@ -271,7 +268,7 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
       loaner: loanerController.text,
       employee: employeeController.text,
       studyNumber: studyNumberController.text,
-      comments: commentsController.text,
+      comment: commentsController.text,
       loanDate: loanDate ?? DateTime.now(),
       returnDate: returnDate ?? DateTime.now(),
       items: items,

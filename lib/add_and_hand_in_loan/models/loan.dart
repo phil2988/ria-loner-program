@@ -7,7 +7,7 @@ class Loan {
     required this.loaner,
     required this.employee,
     required this.studyNumber,
-    required this.comments,
+    required this.comment,
     required this.loanDate,
     required this.returnDate,
     required this.items,
@@ -18,7 +18,7 @@ class Loan {
   final String loaner;
   final String employee;
   final String studyNumber;
-  final String comments;
+  final String comment;
   final DateTime loanDate;
   final DateTime returnDate;
   final List<LoanItem> items;
@@ -29,7 +29,7 @@ class Loan {
         loaner: json["loaner"],
         employee: json["employee"],
         studyNumber: json["studyNumber"],
-        comments: json["comments"],
+        comment: json["comments"],
         loanDate: DateTime.parse(json["loanDate"]),
         returnDate: DateTime.parse(json["returnDate"]),
         items:
@@ -42,7 +42,7 @@ class Loan {
         "loaner": loaner,
         "employee": employee,
         "studyNumber": studyNumber,
-        "comments": comments,
+        "comments": comment,
         "loanDate": loanDate.toIso8601String(),
         "returnDate": returnDate.toIso8601String(),
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
