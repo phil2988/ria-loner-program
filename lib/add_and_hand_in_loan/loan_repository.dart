@@ -63,11 +63,6 @@ class LoanRepository {
     }
   }
 
-  /// Updates an exitsing loan in the database to be handed in
-  ///
-  /// [loan] is the loan to hand in
-  Future handInLoan(Loan loan) async {}
-
   /// Gets all loans from the database
   ///
   /// Returns an empty list if no loans are found
@@ -87,6 +82,52 @@ class LoanRepository {
     } catch (e) {
       print(e);
       return [];
+    }
+  }
+
+  /// Gets all loan items associated with a loan from the database
+  ///
+  /// [loanId] is the id of the loan to get items from
+  ///
+  /// Returns an empty list if no loans are found
+  Future<List<Map<String, dynamic>>> getAllLoanItems(String loanId) async {
+    try {
+      // Getting all loans from database
+      final jsonString = await SqlConn.readData(
+          "SELECT * FROM LoanItems WHERE loan = '$loanId'");
+
+      // Convert the data from a string to a list of dynamic maps
+      final List<dynamic> dataList = jsonDecode(jsonString);
+
+      // Convert the list of dynamic maps to a list of maps with String keys
+      final List<Map<String, dynamic>> data =
+          dataList.cast<Map<String, dynamic>>();
+
+      return data;
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+  /// Updates the delivered status of a loan in the database
+  ///
+  /// [loanId] is the id of the loan to update
+  ///
+  /// Throws an exception if the query fails
+  Future handInLoan(String loanId) async {
+    // Building query for adding loanitems to database
+    String query = "UPDATE Loans SET delivered = '1' WHERE id = '$loanId'";
+
+    // Writing query to database
+    try {
+      final res = await SqlConn.writeData(query);
+      // Should return true if the query was successful
+      if (res == false) {
+        throw Exception("Adding loan items to database returned false");
+      }
+    } catch (e) {
+      throw Exception("Error adding loan items to database");
     }
   }
 

@@ -184,8 +184,13 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
             Text(labelText),
             const SizedBox(height: 10),
             SelectDateWidget(
-              initialDate: DateTime.now(),
-              lastDate: DateTime.now(),
+              initialDate: label == "Loan date" ? DateTime.now() : null,
+              firstDate: label == "Loan date"
+                  ? DateTime.now().subtract(const Duration(days: 30))
+                  : DateTime.now().subtract(const Duration(days: 27)),
+              lastDate: label == "Loan date"
+                  ? DateTime.now()
+                  : DateTime.now().add(const Duration(days: 3)),
               label: label,
               onDateSelected: onDateSelected,
             ),
