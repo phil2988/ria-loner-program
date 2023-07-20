@@ -74,33 +74,43 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
             child: LayoutBuilder(builder: (context, pageConstraints) {
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              return Column(
                 children: [
-                  SizedBox(
-                    width: pageConstraints.maxWidth * 0.6,
-                    child: Column(
-                      children: [
-                        buildFormFields(pageConstraints),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 20),
-                  SizedBox(
-                    width: pageConstraints.maxWidth * 0.35,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        buildDateSelection(pageConstraints),
-                        const SizedBox(height: 20),
-                        const SizedBox(height: 10),
-                        LoanItemList(setLoanItems: setItems),
-                      ],
-                    ),
-                  ),
+                  buildFormFields(pageConstraints),
+                  buildDateSelection(pageConstraints),
+                  const SizedBox(height: 20),
+                  const SizedBox(height: 10),
+                  LoanItemList(setLoanItems: setItems),
                 ],
               );
+
+              // return Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //   children: [
+              //     SizedBox(
+              //       width: pageConstraints.maxWidth * 0.6,
+              //       child: Column(
+              //         children: [
+              //           buildFormFields(pageConstraints),
+              //         ],
+              //       ),
+              //     ),
+              //     const SizedBox(width: 20),
+              //     SizedBox(
+              //       width: pageConstraints.maxWidth * 0.35,
+              //       child: Column(
+              //         mainAxisSize: MainAxisSize.max,
+              //         mainAxisAlignment: MainAxisAlignment.start,
+              //         children: [
+              //           buildDateSelection(pageConstraints),
+              //           const SizedBox(height: 20),
+              //           const SizedBox(height: 10),
+              //           LoanItemList(setLoanItems: setItems),
+              //         ],
+              //       ),
+              //     ),
+              //   ],
+              // );
             }),
           ),
         ),
@@ -237,10 +247,10 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
   }
 
   void saveToJson() {
-    final file = File('data.json');
-    final existingData = file.readAsStringSync();
-    final existingDataDecoded =
-        existingData.isNotEmpty ? jsonDecode(existingData) : [];
+    // final file = File('data.json');
+    // final existingData = file.readAsStringSync();
+    // final existingDataDecoded =
+    //     existingData.isNotEmpty ? jsonDecode(existingData) : [];
 
     // existingDataDecoded.add(
     //   Loan(
