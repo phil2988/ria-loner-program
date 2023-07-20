@@ -59,9 +59,9 @@ class _LoanItemListState extends State<LoanItemList> {
           index: items.indexOf(item),
           item: item,
           allItems: items,
-          removeItem: () => setState(() => {
-                items.remove(item),
-              }),
+          removeItem: () => setState(
+            () => items.remove(item),
+          ),
         )
       ],
     ]);
