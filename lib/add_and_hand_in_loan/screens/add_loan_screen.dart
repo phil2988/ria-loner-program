@@ -73,19 +73,22 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
         key: _formKey,
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: LayoutBuilder(builder: (context, pageConstraints) {
-              return Column(
-                children: [
-                  buildFormFields(pageConstraints),
-                  const SizedBox(height: 10),
-                  buildDateSelection(pageConstraints),
-                  const SizedBox(height: 10),
-                  LoanItemList(setLoanItems: setItems),
-                ],
-              );
-            }),
+          child: SingleChildScrollView(
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: LayoutBuilder(builder: (context, pageConstraints) {
+                return Column(
+                  children: [
+                    buildFormFields(pageConstraints),
+                    const SizedBox(height: 10),
+                    buildDateSelection(pageConstraints),
+                    const SizedBox(height: 10),
+                    LoanItemList(setLoanItems: setItems),
+                    const SizedBox(height: 50)
+                  ],
+                );
+              }),
+            ),
           ),
         ),
       ),

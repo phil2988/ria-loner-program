@@ -61,6 +61,11 @@ class _LoansTableWidgetState extends State<LoansTableWidget> {
         .where((loan) => loan['delivered'] == 0)
         .map(
           (loan) => DataRow(
+            color:
+                DateTime.parse(loan['return_date']).compareTo(DateTime.now()) <
+                        0
+                    ? MaterialStateProperty.all(Colors.red)
+                    : MaterialStateProperty.all(Colors.white),
             onSelectChanged: (value) => onRowPressed(
               value,
               Loan.fromJson(loan),
