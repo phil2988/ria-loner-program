@@ -6,9 +6,8 @@ class LoanRepository {
   ///
   /// [loan] is the loan to add
   Future addLoan(Loan loan) async {
-    print("adding loan to database");
+    // Building query for adding loan to database
     String query = "INSERT INTO Loans VALUES (";
-
     query += "'${loan.id}',";
     query += "'${loan.loaner}',";
     query += "'${loan.studyNumber}',";
@@ -18,11 +17,16 @@ class LoanRepository {
     query +=
         "'${loan.returnDate.year}-${loan.returnDate.month < 10 ? "0${loan.returnDate.month}" : loan.returnDate.month}-${loan.returnDate.day < 10 ? "0${loan.returnDate.day}" : loan.returnDate.day}',";
     query += "'${loan.employee}')";
+
+    // Writing query to database
     try {
       final res = await SqlConn.writeData(query);
-      print("result of query: $res");
+      // Should return true if the query was successful
+      if (res == false) {
+        throw Exception("Adding loan to database returned false");
+      }
     } catch (e) {
-      print(e);
+      throw Exception("Error adding loan to database");
     }
   }
 
