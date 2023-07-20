@@ -36,41 +36,41 @@ class HandInItemDialog extends StatelessWidget {
                 height: 10,
               ),
               const Divider(),
-              ...item.items.map((e) => Column(
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          SizedBox(
-                            width: constraints.maxWidth * 0.45,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Description: ${e.name ?? "n/a"}",
-                                  style: const TextStyle(fontSize: 20),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            width: constraints.maxWidth * 0.45,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Category: ${e.category?.toString() ?? "n/a"}",
-                                  style: const TextStyle(fontSize: 20),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const Divider()
-                    ],
-                  )),
+              // ...item.items.map((e) => Column(
+              //       children: [
+              //         Row(
+              //           crossAxisAlignment: CrossAxisAlignment.start,
+              //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //           children: [
+              //             SizedBox(
+              //               width: constraints.maxWidth * 0.45,
+              //               child: Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 children: [
+              //                   Text(
+              //                     "Description: ${e.name ?? "n/a"}",
+              //                     style: const TextStyle(fontSize: 20),
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //             SizedBox(
+              //               width: constraints.maxWidth * 0.45,
+              //               child: Column(
+              //                 crossAxisAlignment: CrossAxisAlignment.start,
+              //                 children: [
+              //                   Text(
+              //                     "Category: ${e.category?.toString() ?? "n/a"}",
+              //                     style: const TextStyle(fontSize: 20),
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //           ],
+              //         ),
+              //         const Divider()
+              //       ],
+              //     )),
             ],
           );
         }),

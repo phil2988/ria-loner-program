@@ -1,5 +1,3 @@
-import 'loan_item.dart';
-
 class Loan {
   Loan({
     this.id,
@@ -10,7 +8,6 @@ class Loan {
     required this.comment,
     required this.loanDate,
     required this.returnDate,
-    required this.items,
   }) {
     id ??= DateTime.now().millisecondsSinceEpoch.toString();
   }
@@ -21,20 +18,17 @@ class Loan {
   final String comment;
   final DateTime loanDate;
   final DateTime returnDate;
-  final List<LoanItem> items;
   bool delivered;
 
   factory Loan.fromJson(Map<String, dynamic> json) => Loan(
-        id: json["id"],
+        id: json["id"].toString(),
         loaner: json["loaner"],
         employee: json["employee"],
-        studyNumber: json["studyNumber"],
-        comment: json["comments"],
-        loanDate: DateTime.parse(json["loanDate"]),
-        returnDate: DateTime.parse(json["returnDate"]),
-        items:
-            List<LoanItem>.from(json["items"].map((x) => LoanItem.fromJson(x))),
-        delivered: json["delivered"] ?? false,
+        studyNumber: json["study_number"].toString(),
+        comment: json["comment"],
+        loanDate: DateTime.parse(json["loan_date"]),
+        returnDate: DateTime.parse(json["return_date"]),
+        delivered: json["delivered"] == "0" ? false : true,
       );
 
   Map<String, dynamic> toJson() => {
@@ -45,7 +39,6 @@ class Loan {
         "comments": comment,
         "loanDate": loanDate.toIso8601String(),
         "returnDate": returnDate.toIso8601String(),
-        "items": List<dynamic>.from(items.map((x) => x.toJson())),
         "delivered": delivered,
       };
 }

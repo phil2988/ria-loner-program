@@ -1,17 +1,18 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+
 import '../models/loan.dart';
 import 'hand_in_item_dialog.dart';
-import '../models/loan.dart';
 
 class LoansTableWidget extends StatefulWidget {
   const LoansTableWidget(
-      {Key? key, required this.loans, required this.onLoanAdded})
+      {Key? key,
+      required this.loans,
+      required this.onLoanAdded,
+      required this.maxWidth})
       : super(key: key);
 
   final List<Map<String, dynamic>> loans;
+  final double maxWidth;
   final VoidCallback onLoanAdded;
 
   @override
@@ -40,46 +41,77 @@ class _LoansTableWidgetState extends State<LoansTableWidget> {
   List<DataColumn> getColumnData(List<Map<String, dynamic>> loans) {
     Set<String> columnNames = {};
     for (var loan in loans) {
-      columnNames.addAll(loan.keys);
+      columnNames.addAll(loan.keys.where((element) =>
+          element == "loaner" ||
+          element == "study_number" ||
+          element == "return_date"));
     }
-    columnNames.remove('items');
-    columnNames.remove('delivered');
 
     return columnNames
-        .map((columnName) => DataColumn(label: Text(columnName)))
+        .map(
+          (columnName) => DataColumn(
+            label: Text(columnName),
+          ),
+        )
         .toList();
   }
 
   List<DataRow> getRowData(List<Map<String, dynamic>> loans) {
     return loans
-        .where((loan) => loan['delivered'] == false)
-        .map((loan) => DataRow(
-              onSelectChanged: (value) =>
-                  onRowPressed(value, Loan.fromJson(loan)),
-              cells: getColumnData(loans).map((column) {
+        .where((loan) => loan['delivered'] == 0)
+        .map(
+          (loan) => DataRow(
+            onSelectChanged: (value) => onRowPressed(
+              value,
+              Loan.fromJson(loan),
+            ),
+            cells: getColumnData(loans).map(
+              (column) {
                 final columnName = column.label as Text;
                 if (isDateColumn(columnName.data.toString(), loan) &&
-                    !loan["delivered"]) {
-                  DateTime date =
-                      DateTime.parse(loan[columnName.data.toString()]);
+                    loan["delivered"] == 0) {
+                  DateTime date = DateTime.parse(
+                    loan[columnName.data.toString()],
+                  );
                   return DataCell(
-                      Text("${date.day}/${date.month}-${date.year}"));
+                    SizedBox(
+                        width: widget.maxWidth / columns.length,
+                        child: Text("${date.day}/${date.month}-${date.year}")),
+                  );
                 } else {
                   return DataCell(
-                      Text(loan[columnName.data.toString()]?.toString() ?? ''));
+                    SizedBox(
+                        width: widget.maxWidth / columns.length,
+                        child:
+                            Text(loan[columnName.data.toString()].toString())),
+                  );
                 }
-              }).toList(),
-            ))
+              },
+            ).toList(),
+          ),
+        )
         .toList();
   }
 
   bool isDateColumn(String columnName, Map<String, dynamic> loan) {
-    return (columnName.contains('loanDate') && loan['loanDate'] != null) ||
-        (columnName.contains('returnDate') && loan['returnDate'] != null);
+    return (columnName.contains('loan_date') && loan['loan_date'] != null) ||
+        (columnName.contains('return_date') && loan['return_date'] != null);
   }
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(columns: columns, rows: rows);
+    return DataTable(
+      columnSpacing: 0,
+      columns: columns.map((column) {
+        if ((column.label is Text) &&
+            ((column.label as Text).data!.contains("_"))) {
+          return DataColumn(
+              label: Text((column.label as Text).data!.replaceAll("_", " ")));
+        }
+        return column;
+      }).toList(),
+      rows: rows,
+      showCheckboxColumn: false,
+    );
   }
 }

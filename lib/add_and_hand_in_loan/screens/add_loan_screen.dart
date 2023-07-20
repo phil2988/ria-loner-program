@@ -28,7 +28,7 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
+        onPressed: () async {
           if (items.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text('No items selected')),
@@ -48,15 +48,20 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
             return;
           }
           if (_formKey.currentState!.validate()) {
-            ScaffoldMessenger.of(context).showSnackBar(
+            final snackbar = ScaffoldMessenger.of(context);
+            final navigator = Navigator.of(context);
+
+            if (!(await onSubmit())) {
+              return;
+            }
+            snackbar.showSnackBar(
               const SnackBar(content: Text('Loan added!')),
             );
-            saveToJson();
-            Navigator.pop(context);
+            navigator.pop();
             return;
           }
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Error...')),
+            const SnackBar(content: Text('An unexpected error occured...')),
           );
         },
         child: const Icon(Icons.check),
@@ -74,40 +79,12 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
               return Column(
                 children: [
                   buildFormFields(pageConstraints),
+                  const SizedBox(height: 10),
                   buildDateSelection(pageConstraints),
-                  const SizedBox(height: 20),
                   const SizedBox(height: 10),
                   LoanItemList(setLoanItems: setItems),
                 ],
               );
-
-              // return Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //   children: [
-              //     SizedBox(
-              //       width: pageConstraints.maxWidth * 0.6,
-              //       child: Column(
-              //         children: [
-              //           buildFormFields(pageConstraints),
-              //         ],
-              //       ),
-              //     ),
-              //     const SizedBox(width: 20),
-              //     SizedBox(
-              //       width: pageConstraints.maxWidth * 0.35,
-              //       child: Column(
-              //         mainAxisSize: MainAxisSize.max,
-              //         mainAxisAlignment: MainAxisAlignment.start,
-              //         children: [
-              //           buildDateSelection(pageConstraints),
-              //           const SizedBox(height: 20),
-              //           const SizedBox(height: 10),
-              //           LoanItemList(setLoanItems: setItems),
-              //         ],
-              //       ),
-              //     ),
-              //   ],
-              // );
             }),
           ),
         ),
@@ -118,20 +95,7 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
   Column buildFormFields(BoxConstraints constraints) {
     return Column(
       children: [
-        buildFormField(
-          constraints: constraints,
-          validator: (value) {
-            if (value == null || value.isEmpty) {
-              return 'Please enter a loaner';
-            }
-            return null;
-          },
-          controller: loanerController,
-          hintText: 'Loaner',
-        ),
-        const SizedBox(height: 20),
-        buildFormField(
-          constraints: constraints,
+        TextFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter a value';
@@ -148,12 +112,15 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
 
             return null;
           },
+          onChanged: (val) => validateStudent(),
           controller: studyNumberController,
-          hintText: 'Study number',
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: "Student number",
+          ),
         ),
         const SizedBox(height: 20),
-        buildFormField(
-          constraints: constraints,
+        TextFormField(
           validator: (value) {
             if (value == null || value.isEmpty) {
               return 'Please enter an employee';
@@ -161,7 +128,10 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
             return null;
           },
           controller: employeeController,
-          hintText: 'Employee',
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: "Employee",
+          ),
         ),
         const SizedBox(height: 20),
         TextFormField(
@@ -176,24 +146,9 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
     );
   }
 
-  TextFormField buildFormField({
-    required BoxConstraints constraints,
-    required String? Function(String?) validator,
-    required TextEditingController controller,
-    required String hintText,
-  }) {
-    return TextFormField(
-      validator: validator,
-      controller: controller,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        hintText: hintText,
-      ),
-    );
-  }
-
-  Column buildDateSelection(BoxConstraints constraints) {
-    return Column(
+  Row buildDateSelection(BoxConstraints constraints) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         buildDateRow(
           constraints: constraints,
@@ -224,9 +179,10 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        Row(
+        Column(
           children: [
             Text(labelText),
+            const SizedBox(height: 10),
             SelectDateWidget(
               initialDate: DateTime.now(),
               lastDate: DateTime.now(),
@@ -243,36 +199,56 @@ class _AddLoanScreenState extends State<AddLoanScreen> {
     this.items = items;
   }
 
-  void saveToJson() {
-    // final file = File('data.json');
-    // final existingData = file.readAsStringSync();
-    // final existingDataDecoded =
-    //     existingData.isNotEmpty ? jsonDecode(existingData) : [];
+  Future<bool> onSubmit() async {
+    final snackbar = ScaffoldMessenger.of(context);
 
-    // existingDataDecoded.add(
-    //   Loan(
-    //     loaner: loanerController.text,
-    //     employee: employeeController.text,
-    //     studyNumber: studyNumberController.text,
-    //     comments: commentsController.text,
-    //     loanDate: loanDate ?? DateTime.now(),
-    //     returnDate: returnDate ?? DateTime.now(),
-    //     items: items,
-    //     delivered: false,
-    //   ).toJson(),
-    // );
+    try {
+      final student = await validateStudent();
+      loanerController.text = student["Name"];
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Error validating student number')),
+      );
+      return false;
+    }
 
-    // file.writeAsStringSync(jsonEncode(existingDataDecoded));
+    try {
+      final loan = Loan(
+        loaner: loanerController.text,
+        employee: employeeController.text,
+        studyNumber: studyNumberController.text,
+        comment: commentsController.text,
+        loanDate: loanDate ?? DateTime.now(),
+        returnDate: returnDate ?? DateTime.now(),
+        delivered: false,
+      );
 
-    LoanRepository().addLoan(Loan(
-      loaner: loanerController.text,
-      employee: employeeController.text,
-      studyNumber: studyNumberController.text,
-      comment: commentsController.text,
-      loanDate: loanDate ?? DateTime.now(),
-      returnDate: returnDate ?? DateTime.now(),
-      items: items,
-      delivered: false,
-    ));
+      if (loan.id == null) {
+        throw Exception("Loan id is null");
+      }
+
+      await LoanRepository().addLoan(loan);
+
+      await LoanRepository().addLoanItems(
+        loan.id!,
+        items,
+      );
+    } catch (e) {
+      snackbar.showSnackBar(
+        SnackBar(content: Text('Error adding loan to database: $e')),
+      );
+      return false;
+    }
+
+    return true;
+  }
+
+  Future<Map<String, dynamic>> validateStudent() async {
+    try {
+      return await LoanRepository()
+          .validateStudyNumber(studyNumberController.text);
+    } catch (e) {
+      throw Exception("Error validating student number");
+    }
   }
 }

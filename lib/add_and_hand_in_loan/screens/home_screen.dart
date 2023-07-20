@@ -54,12 +54,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height,
                 child: LayoutBuilder(builder: (context, constraints) {
+                  final horizontalPadding = constraints.maxWidth * 0.05;
+                  final verticalPadding = constraints.maxHeight * 0.05;
                   return SingleChildScrollView(
                     child: Padding(
                       padding: EdgeInsets.symmetric(
-                          horizontal: constraints.maxWidth * 0.05,
-                          vertical: constraints.maxHeight * 0.05),
+                          horizontal: horizontalPadding,
+                          vertical: verticalPadding),
                       child: LoansTableWidget(
+                        maxWidth: constraints.maxWidth - horizontalPadding * 2,
                         loans: snapshot.data ?? [],
                         onLoanAdded: () => setState(() {}),
                       ),
